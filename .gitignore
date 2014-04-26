@@ -1,0 +1,5 @@
+build/*
+intermediate/*
+*.opensdf
+*.sdf
+*.vcxproj.user

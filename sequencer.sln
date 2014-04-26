@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sequencer", "src\sequencer\sequencer.vcxproj", "{08D6901B-E454-4685-A226-78559A7ED5DB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "src\demo\demo.vcxproj", "{37E41584-6F90-4950-A17E-9A3B3FC0E4EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08D6901B-E454-4685-A226-78559A7ED5DB} = {08D6901B-E454-4685-A226-78559A7ED5DB}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08D6901B-E454-4685-A226-78559A7ED5DB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{08D6901B-E454-4685-A226-78559A7ED5DB}.Debug|Win32.Build.0 = Debug|Win32
+		{08D6901B-E454-4685-A226-78559A7ED5DB}.Release|Win32.ActiveCfg = Release|Win32
+		{08D6901B-E454-4685-A226-78559A7ED5DB}.Release|Win32.Build.0 = Release|Win32
+		{37E41584-6F90-4950-A17E-9A3B3FC0E4EB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{37E41584-6F90-4950-A17E-9A3B3FC0E4EB}.Debug|Win32.Build.0 = Debug|Win32
+		{37E41584-6F90-4950-A17E-9A3B3FC0E4EB}.Release|Win32.ActiveCfg = Release|Win32
+		{37E41584-6F90-4950-A17E-9A3B3FC0E4EB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
