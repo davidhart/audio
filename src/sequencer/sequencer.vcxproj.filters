@@ -4,28 +4,40 @@
     <Filter Include="src">
       <UniqueIdentifier>{21ede5bb-450a-4d1f-948b-4108fb9037c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\effects">
+      <UniqueIdentifier>{0d9c7a4b-e1e0-42fe-83ab-d7030885f3aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="buffer_utils.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="sequence.h">
+    <ClInclude Include="audio.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="track.h">
+    <ClInclude Include="buffer_utils.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="voice.h">
+    <ClInclude Include="config.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="wavetable.h">
+    <ClInclude Include="effect.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="sequence.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="track.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="wavetable.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="effects\effect_peak_compressor.hpp">
+      <Filter>src\effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="wavetable.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="effects\effect_peak_compressor.cpp">
+      <Filter>src\effects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

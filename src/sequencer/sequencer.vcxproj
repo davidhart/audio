@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -12,15 +12,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
-    <ClInclude Include="buffer_utils.h" />
+    <ClInclude Include="audio.hpp" />
+    <ClInclude Include="buffer_utils.hpp" />
     <ClInclude Include="config.h" />
-    <ClInclude Include="sequence.h" />
-    <ClInclude Include="track.h" />
-    <ClInclude Include="voice.h" />
-    <ClInclude Include="wavetable.h" />
+    <ClInclude Include="config.hpp" />
+    <ClInclude Include="effect.hpp" />
+    <ClInclude Include="effects\effect_peak_compressor.hpp" />
+    <ClInclude Include="sequence.hpp" />
+    <ClInclude Include="track.hpp" />
+    <ClInclude Include="wavetable.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="buffer_utils.cpp" />
+    <ClCompile Include="effects\effect_peak_compressor.cpp" />
     <ClCompile Include="sequence.cpp" />
     <ClCompile Include="track.cpp" />
     <ClCompile Include="wavetable.cpp" />
@@ -33,13 +37,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>

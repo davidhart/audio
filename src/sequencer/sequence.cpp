@@ -1,7 +1,8 @@
-#include "sequence.h"
-#include "buffer_utils.h"
+#include "sequence.hpp"
+#include "buffer_utils.hpp"
 
 #include <cassert>
+#include <algorithm>
 
 Sequence::Sequence()
 {
@@ -27,18 +28,28 @@ Sequence& Sequence::operator=(const Sequence& rhs)
 	return *this;
 }
 
-Track* Sequence::AddTrack()
+Track* Sequence::AddTrack(const char* name)
 {
 	Track* newTrack = new Track();
 
-	_tracks.push_back(newTrack);
+	_tracks[name] = newTrack;
 
 	return newTrack;
 }
 
-void Sequence::RemoveTrack(Track* track)
+Track* Sequence::GetTrack(const char* name)
 {
-	TrackCollection::iterator it = std::find(_tracks.begin(), _tracks.end(), track);
+    TrackCollection::iterator it = _tracks.find(name);
+    
+    if (it == _tracks.end())
+        return NULL;
+    
+    return it->second;
+}
+
+void Sequence::RemoveTrack(const char* name)
+{
+	TrackCollection::iterator it = _tracks.find(name);
 
 	assert(it != _tracks.end());
 
@@ -47,28 +58,62 @@ void Sequence::RemoveTrack(Track* track)
 
 void Sequence::ClearTracks()
 {
-	for (unsigned i = 0; i < _tracks.size(); ++i)
+	for (TrackCollection::iterator it = _tracks.begin(); it != _tracks.end(); ++it)
 	{
-		delete _tracks[i];
+		delete it->second;
 	}
 
 	_tracks.clear();
 }
 
-void Sequence::BlitSequence(float* buffer, unsigned bufferSize, unsigned offset)
+void Sequence::AddEffect(Effect* effect)
+{
+    _effectChain.insert(effect);
+}
+
+void Sequence::RemoveEffect(Effect* effect)
+{
+    _effectChain.erase(effect);
+}
+
+void Sequence::ClearEffects()
+{
+    _effectChain.clear();
+}
+
+void Sequence::BlitSequence(float* buffer, unsigned bufferSize, unsigned offset, float tempo)
 {
 	BufferUtils::ZeroBuffer(buffer, bufferSize);
 
-	for (unsigned i = 0; i < _tracks.size(); ++i)
+	for (TrackCollection::iterator it = _tracks.begin(); it != _tracks.end(); ++it)
 	{
-		_tracks[i]->BlitTrack(buffer, bufferSize, offset);
+		it->second->BlitTrack(buffer, bufferSize, offset, tempo);
 	}
+    
+    for (EffectCollection::iterator it = _effectChain.begin(); it != _effectChain.end(); ++it)
+    {
+        (*it)->Process(buffer, bufferSize, offset, tempo);
+    }
 }
 
 void Sequence::CopyInternal(const Sequence& rhs)
 {
-	for(unsigned i = 0; i < rhs._tracks.size(); ++i)
+    _tracks.clear();
+    
+	for (TrackCollection::const_iterator it = rhs._tracks.begin(); it != rhs._tracks.end(); ++it)
 	{
-		_tracks.push_back(new Track(*rhs._tracks[i]));
+		_tracks[it->first] = new Track(*it->second);
 	}
+}
+
+unsigned Sequence::GetLength() const
+{
+    unsigned maxLength = 0;
+    
+	for (TrackCollection::const_iterator it = _tracks.begin(); it != _tracks.end(); ++it)
+	{
+        maxLength = std::max(it->second->GetLength(), maxLength);
+    }
+    
+    return maxLength;
 }

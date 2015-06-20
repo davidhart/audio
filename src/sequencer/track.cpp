@@ -1,7 +1,14 @@
-#include "track.h"
-#include "wavetable.h"
-#include "buffer_utils.h"
-#include <cassert>
+#include "track.hpp"
+#include "wavetable.hpp"
+#include "buffer_utils.hpp"
+
+Track::Track() :
+    _volume(1.0f),
+    _length(0),
+    _waveTable(NULL)
+{
+    
+}
 
 void Track::SetWaveBank(WaveTable* waveTable)
 {
@@ -13,18 +20,27 @@ void Track::AddNote(Note note)
 	_notes.push_back(note);
 }
 
+Note* Track::GetNotes()
+{
+    return _notes.data();
+}
+
+unsigned Track::NumNotes()
+{
+    return (unsigned)_notes.size();
+}
+
 void Track::ClearNotes()
 {
 	_notes.clear();
 }
 
-void Track::BlitTrack(float* buffer, unsigned bufferSize, unsigned offset)
+void Track::BlitTrack(float* buffer, unsigned bufferSize, unsigned offset, float tempo)
 {
 	// TODO: scratch buffer re-write
-	float tempBuffer[512];
-	assert (bufferSize <= 512);
+	float tempBuffer[1024];
 
-	BufferUtils::ZeroBuffer(tempBuffer, 512);
+	BufferUtils::ZeroBuffer(tempBuffer, 1024);
 
 	for (unsigned i = 0; i < _notes.size(); ++i)
 	{
@@ -32,7 +48,7 @@ void Track::BlitTrack(float* buffer, unsigned bufferSize, unsigned offset)
 
 		unsigned keyLength = _waveTable->GetKeyLength(note.Key);
 
-		unsigned noteStart = note.StartOffset;
+		unsigned noteStart = (unsigned)(note.StartOffset * tempo);
 		unsigned noteEnd = noteStart + keyLength;
 
 		// Mix the key if it's playback region overlaps the current segment of samples
@@ -51,7 +67,7 @@ void Track::BlitTrack(float* buffer, unsigned bufferSize, unsigned offset)
 				noteStartSampleInBlock += leadIn;
 				noteDurationInBlock -= leadIn;
 
-				BufferUtils::ZeroBuffer(buffer, leadIn);
+				BufferUtils::ZeroBuffer(tempBuffer, leadIn);
 			}
 
 			// If note ends before block end
@@ -61,12 +77,27 @@ void Track::BlitTrack(float* buffer, unsigned bufferSize, unsigned offset)
 
 				noteDurationInBlock -= leadOut;
 
-				BufferUtils::ZeroBuffer(buffer + bufferSize - leadOut, leadOut);
+				BufferUtils::ZeroBuffer(tempBuffer + bufferSize - leadOut, leadOut);
 			}
 
-			_waveTable->BlitKey(tempBuffer + noteStartSampleInBlock, noteDurationInBlock, offset + noteStartSampleInBlock - note.StartOffset, note.Key);
+			_waveTable->BlitKey(tempBuffer + noteStartSampleInBlock, noteDurationInBlock, offset + noteStartSampleInBlock - noteStart, note.Key, note.Volume * _volume);
 			
 			BufferUtils::MixBuffers(tempBuffer, buffer, bufferSize);
 		}
 	}
+}
+
+void Track::SetLength(unsigned length)
+{
+    _length = length;
+}
+
+unsigned Track::GetLength() const
+{
+    return _length;
+}
+
+void Track::SetVolume(float volume)
+{
+    _volume = volume;
 }
